@@ -1,10 +1,12 @@
 var nextEl = document.querySelector('#next');
-var choiceEl = document.querySelector('#choice')
 var timerEl = document.querySelector('#timer')
+var choiceEl = document.createElement('button');
+choiceEl.textContent = "Click here to begin"
+document.body.appendChild(choiceEl);
 var cursor = 0;
 var seconds = 60;
 
-function displayTime() {
+function displayTime() {  
   var label = "seconds";
   if (seconds === 1) {
     label = "second"
@@ -15,19 +17,21 @@ function displayTime() {
 displayTime();
 
 var questions = [
-  "Click here to begin!",
-  "How much wood could a woodchuck chuck?",
-  "Did you have your break today?",
-  "Do you like ice cream?",
-  "What's your favorite pizza topping?"
+  "Instructions",
+  "Question 1",
+  "Question 2",
+  "Question 3",
+  "Question 4"
 ];
 
 var choices = ["a","b","c","d"];
+var choices2 = ["a","b","c","d"];
+var choices3 = ["a","b","c","d"];
+var choices4 = ["a","b","c","d"];
 
 var displayQuestion = function () {
   nextEl.textContent = questions[cursor];
 };
-
 
 var advance = function() {
   if (cursor < questions.length - 1) {
@@ -35,31 +39,28 @@ var advance = function() {
   }
   displayQuestion();
   for (var i = 0; i < choices.length; i++) {
+    choiceEl = choices[0];
     var choiceEl = document.createElement('button');
     choiceEl.textContent = choices[i];  
-    nextEl.appendChild(choiceEl);
-    setTime();  
+    document.body.appendChild(choiceEl);
+    countdown();  
   }  
 };
 
-nextEl.addEventListener('click', advance);
-
 displayQuestion();
 
-function setTime() {
-  displayTime();
+choiceEl.addEventListener('click', advance);
+
+function countdown() {
+  displayTime(seconds);
 
   // Sets interval in variable
   var timerInterval = setInterval(function() {
     seconds--;
-    displayTime();
-
-    if(seconds === 0) {
-      // Stops execution of action at set interval
+    displayTime(seconds);  
+    if(seconds <= 0) {
       clearInterval(timerInterval);
-      // Calls function to create and append image
-      sendMessage();
+      timerEl.textContent = "Quiz failed!";
     }
-
   }, 1000);
 }
